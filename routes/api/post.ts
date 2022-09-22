@@ -62,4 +62,24 @@ export const handler: Handlers = {
       });
     }
   },
+  /**
+   * Delete a post
+   */
+  async DELETE(req: Request) {
+    try {
+      const body = await req.json();
+      const faunaClientWithAuth = getFaunaClient(req.headers.get("Authorization")!);
+      const post = await faunaClientWithAuth.query(
+        q.Delete(q.Ref(q.Collection('Post'), body._id))
+      );
+      return Response.json({
+        data: post.data,
+      });
+      
+    } catch (error) {
+      return Response.json({
+        error: error.message,
+      });
+    }
+  },
 };
