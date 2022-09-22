@@ -1,3 +1,5 @@
+import PostList from "../islands/PostList.tsx";
+
 export default function Home() {
   return (
     <div class="p-4 mx-auto max-w-screen-md">
@@ -5,6 +7,7 @@ export default function Home() {
         Welcome to `🥤 Fresh Blogs 🍋`!
       </h1>
       <p class="my-6">Fresh ideas everyday</p>
+      <PostList />
     </div>
   );
 }

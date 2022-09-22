@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { getFaunaClient, q } from "../../utils/db.ts";
+import { getFaunaClient, q, faunaClient } from "../../utils/db.ts";
 
 export const handler: Handlers = {
   /**
@@ -27,6 +27,34 @@ export const handler: Handlers = {
           _id: newpost.ref.id,
           ...newpost.data,
         }
+      });
+    } catch (error) {
+      return Response.json({
+        error: error.message,
+      });
+    }
+  },
+
+   /**
+   * Get all posts
+   */
+  async GET() {
+    try {
+      const posts: any[] = [];
+      const { data } = await faunaClient.query(
+        q.Map(
+          q.Paginate(q.Documents(q.Collection('Post'))),
+          q.Lambda("post", q.Get(q.Var("post")))
+        )
+      );
+      data.forEach((post: any) => {
+        posts.push({
+          _id: post.ref.id,
+          ...post.data,
+        });
+      })
+      return Response.json({
+        data: posts,
       });
     } catch (error) {
       return Response.json({
