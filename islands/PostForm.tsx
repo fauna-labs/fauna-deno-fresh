@@ -6,8 +6,23 @@ export default function PostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const createPost = (e: Event) => {
+  const createPost = async (e: Event) => {
     e.preventDefault();
+    const response = await fetch("/api/post", {
+      headers: {
+        "Authorization": localStorage.getItem("token") || "",
+      },
+      method: "POST",
+      body: JSON.stringify({ title, content, author: localStorage.getItem("username") }),
+    });
+    const data = await response.json();
+    if(data.error) {
+      alert('⛔ Something went wrong! Are you logged in?');
+      return;
+    }
+    alert('Post created!');
+    setTitle("");
+    setContent("");
   }
 
   return (

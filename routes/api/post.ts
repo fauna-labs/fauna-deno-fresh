@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { getFaunaClient, q, faunaClient } from "../../utils/db.ts";
+import { getFaunaClient, q } from "../../utils/db.ts";
 
 export const handler: Handlers = {
   /**
